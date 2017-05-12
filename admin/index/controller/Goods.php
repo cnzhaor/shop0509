@@ -6,7 +6,7 @@ class Goods extends Controller
 {
     public function product_category_add()
     {
-        $pcModel = new ProductCategory();
+        $pcModel = new ProductCategory;
         if (request()->isPost() && !empty(input('post.name'))){
             $pid = input('post.pid');
             $maxId = $pcModel->max('id');
@@ -40,5 +40,23 @@ class Goods extends Controller
     public function product_category()
     {
         return $this->fetch();
+    }
+
+    public function product_category_ajax()
+    {
+        $pcModel = new ProductCategory;
+        return $pcModel->field('id,pid,name')->select();
+    }
+
+    public function product_category_del($id)
+    {
+        $pcModel = new ProductCategory;
+        $hasChild = $pcModel->where('pid='.$id)->find();
+        if($hasChild)
+            return '此分类下有子分类，不能删除！';
+        elseif(db('ProductCategory')->delete($id))
+            return 1;
+        else
+            return false;
     }
 }
