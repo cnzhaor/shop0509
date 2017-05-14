@@ -13,7 +13,7 @@ return [
 
     // 视图输出字符串内容替换
     'view_replace_str'       => [
-        '__INDEX__' => 'http://www.0509.com/static/index/'
+        '__INDEX__' => '/static/index/'
     ],
 
 ];

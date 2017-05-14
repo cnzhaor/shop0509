@@ -2,8 +2,11 @@
 namespace app\index\controller;
 use think\Controller;
 use app\index\model\ProductCategory;
+use think\Db;
+
 class Goods extends Controller
 {
+    //新增商品分类
     public function product_category_add()
     {
         $pcModel = new ProductCategory;
@@ -37,17 +40,23 @@ class Goods extends Controller
         $this->assign('cats', $cats);
         return $this->fetch();
     }
+
+    //商品分类列表
     public function product_category()
     {
         return $this->fetch();
     }
 
+    //AJAX获得商品分类
     public function product_category_ajax()
     {
-        $pcModel = new ProductCategory;
-        return $pcModel->field('id,pid,name')->select();
+//        $pcModel = new ProductCategory;
+//        return $pcModel->field('id,pid,name')->select();
+//        新写法
+        return Db::name('ProductCategory')->field('id,pid,name')->select();
     }
 
+    //删除商品分类
     public function product_category_del($id)
     {
         $pcModel = new ProductCategory;
@@ -58,5 +67,51 @@ class Goods extends Controller
             return 1;
         else
             return false;
+    }
+
+    //新增商品
+    public function product_add()
+    {
+        if(request()->isPost()){
+            $tid = explode(',',input('post.tid'));
+            $attributes = implode(',',$_POST['attributes']);
+            $ret = Db::name('Goods')->insert([
+                'goodsname' => input('post.goodsname'),
+                'tid' => $tid[0],
+                'tpid' => $tid[1],
+                'unit' => input('post.unit'),
+                'attributes' => $attributes,
+                'imagepath' => input('post.file'),
+                'reorder' => input('post.reorder'),
+                'number' => input('post.number'),
+                'barcode' => input('post.barcode'),
+                'curprice' => input('post.curprice'),
+                'oriprice' => input('post.oriprice'),
+                'cosprice' => input('post.cosprice'),
+                'inventory' => input('post.inventory'),
+                'restrict' => input('post.restrict'),
+                'already' => input('post.already'),
+                'status' => input('post.status'),
+                'freight' => input('post.freight'),
+                'text' => input('post.editorValue'),
+            ]);
+            if($ret)
+                $this->success('新增商品成功！',url('product_list'));
+            else
+                $this->error('新增商品失败！'.$ret);
+        }
+        else
+        {
+            $cats = Db::name('ProductCategory')->order('path')->select();
+            $this->assign('cats', $cats);
+            return view();
+        }
+
+    }
+
+    //商品列表
+    public function product_list()
+    {
+        return view();
     }
 }

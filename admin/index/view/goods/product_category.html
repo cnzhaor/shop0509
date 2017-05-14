@@ -64,7 +64,7 @@
 		callback: {
 			beforeClick: function(treeId, treeNode) {
 
-				if(confirm('确定') == true){
+				if(confirm('确定要删除分类吗？') == true){
 //					console.log(treeNode.id);
 					$.ajax({
 						url:"product_category_del",
@@ -73,7 +73,7 @@
 						async:false,
 						success:function(data){
 							if(data == 1){
-								alert('删除成功！');
+								alert('分类删除成功！');
 								location.href='product_category';
 							}
 							else{
