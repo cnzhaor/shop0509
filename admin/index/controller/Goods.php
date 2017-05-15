@@ -94,6 +94,7 @@ class Goods extends Controller
                 'status' => input('post.status'),
                 'freight' => input('post.freight'),
                 'text' => input('post.editorValue'),
+                'lastedit' => time(),
             ]);
             if($ret)
                 $this->success('新增商品成功！',url('product_list'));
@@ -108,10 +109,84 @@ class Goods extends Controller
         }
 
     }
+    //修改商品
+    public function product_edit()
+    {
+        //PARAM变量是框架提供的用于自动识别GET、POST或者PUT请求的一种变量获取方式，是系统推荐的获取请求参数的方法
+        if(request()->isPost()){
+            $tid = explode(',',input('post.tid'));
+            $attributes = implode(',',$_POST['attributes']);
+            $ret = Db::name('Goods')
+                ->where('id', input('param.id'))
+                ->update([
+                'goodsname' => input('post.goodsname'),
+                'tid' => $tid[0],
+                'tpid' => $tid[1],
+                'unit' => input('post.unit'),
+                'attributes' => $attributes,
+                'imagepath' => input('post.file'),
+                'reorder' => input('post.reorder'),
+                'number' => input('post.number'),
+                'barcode' => input('post.barcode'),
+                'curprice' => input('post.curprice'),
+                'oriprice' => input('post.oriprice'),
+                'cosprice' => input('post.cosprice'),
+                'inventory' => input('post.inventory'),
+                'restrict' => input('post.restrict'),
+                'already' => input('post.already'),
+                'status' => input('post.status'),
+                'freight' => input('post.freight'),
+                'text' => input('post.editorValue'),
+                'lastedit' => time(),
+                ]);
+            if($ret)
+                $this->success('商品修改成功！',url('product_list'));
+            else
+                $this->error('商品修改失败！'.$ret);
+        }
+        else
+        {
+            $goods = Db::name('Goods')->where('id',input('param.id'))->find();
+            $cats = Db::name('ProductCategory')->order('path')->select();
+            $this->assign([
+                'cats' => $cats,
+                'goods' => $goods
+            ]);
+            return view();
+        }
+
+    }
 
     //商品列表
     public function product_list()
     {
+        $goods = Db::name('goods')->select();
+        $count = Db::name('goods')->count();
+        $this->assign([
+            'goods' => $goods,
+            'count' => $count
+        ]);
         return view();
+    }
+
+    //商品图片上传
+    public function product_images_add()
+    {
+        // 获取表单上传文件
+        $files = request()->file('image');
+        foreach($files as $file){
+            // 移动到框架应用根目录/public/uploads/ 目录下
+            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+            if($info){
+                // 成功上传后 获取上传信息
+                // 输出 jpg
+                return json_encode([$info->getExtension(),$info->getFilename()]);
+                // 输出 42a79759f284b767dfcb2a0197904287.jpg
+                echo 1;
+            }else{
+                // 上传失败获取错误信息
+                return json_encode($file->getError());
+            }
+        }
     }
 }

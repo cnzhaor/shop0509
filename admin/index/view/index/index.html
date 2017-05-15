@@ -37,7 +37,7 @@
 						<ul class="dropDown-menu menu radius box-shadow">
 							<li><a href="javascript:;" onclick="article_add('添加资讯','article-add.html')"><i class="Hui-iconfont">&#xe616;</i> 资讯</a></li>
 							<li><a href="javascript:;" onclick="picture_add('添加资讯','picture-add.html')"><i class="Hui-iconfont">&#xe613;</i> 图片</a></li>
-							<li><a href="javascript:;" onclick="product_add('添加资讯','product-add.html')"><i class="Hui-iconfont">&#xe620;</i> 产品</a></li>
+							<li><a href="javascript:;" onclick="product_add('添加资讯','product-add.html')"><i class="Hui-iconfont">&#xe620;</i> 商品</a></li>
 							<li><a href="javascript:;" onclick="member_add('添加用户','member-add.html','','510')"><i class="Hui-iconfont">&#xe60d;</i> 用户</a></li>
 					</ul>
 				</li>
@@ -89,12 +89,12 @@
 		</dd>
 	</dl>
 		<dl id="menu-product">
-			<dt><i class="Hui-iconfont">&#xe620;</i> 产品管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dt><i class="Hui-iconfont">&#xe620;</i> 商品管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
 					<li><a data-href="product-brand.html" data-title="品牌管理" href="javascript:void(0)">品牌管理</a></li>
 					<li><a data-href="{:url('index/goods/product_category')}" data-title="分类管理" href="javascript:void(0)">分类管理</a></li>
-					<li><a data-href="{:url('index/goods/product_list')}" data-title="产品管理" href="javascript:void(0)">产品管理</a></li>
+					<li><a data-href="{:url('index/goods/product_list')}" data-title="商品管理" href="javascript:void(0)">商品管理</a></li>
 			</ul>
 		</dd>
 	</dl>
@@ -241,7 +241,7 @@ function picture_add(title,url){
 	});
 	layer.full(index);
 }
-/*产品-添加*/
+/*商品-添加*/
 function product_add(title,url){
 	var index = layer.open({
 		type: 2,
